@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private TextMeshProUGUI beginTimer;
 
+    [SerializeField] private Generator generator;
+
 
     private float scorePlayer1;
     private float scorePlayer2;
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        generator.Generate();
         scoreText1.text = "0";
         scoreText2.text = "0";
         scorePlayer1 = 0;
