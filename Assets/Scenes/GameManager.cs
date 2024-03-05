@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
             timerPaused = true;
             if (scorePlayer1 == scorePlayer2)
             {
-                infoText.text = "?GALIT?";
+                infoText.text = "ÉGALITÉ";
             }
             if (scorePlayer2 < scorePlayer1)
             {
