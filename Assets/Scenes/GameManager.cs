@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,22 +50,26 @@ public class GameManager : MonoBehaviour
     {
         scoreText1.text = "0";
         scoreText2.text = "0";
+        timerText.text = countdownTime.ToString();
         scorePlayer1 = 0;
         scorePlayer2 = 0;
         ball.GetComponent<Rigidbody>().isKinematic = true;
         currentTime = countdownTime;
+
+        generator.Generate();
         Init();
     }
 
     public void Init()
     {
-        generator.Generate();
         ball.position = ballStartPos.position;
         player1.position = player1StartPos.position;
         player1.rotation = player1StartPos.rotation;
         player2.position = player2StartPos.position;
         player2.rotation = player2StartPos.rotation;
         ball.GetComponent<Ball>().Init();
+        player1.GetComponent<Player1Controller>().CantMove();
+        player2.GetComponent<Player2Controller>().CantMove();
 
         player1.GetComponent<Player1Controller>().FillEnergy();
         player2.GetComponent<Player2Controller>().FillEnergy();
@@ -82,8 +87,9 @@ public class GameManager : MonoBehaviour
 
         if (currentTime <= 0)
         {
-            Debug.Log("Vgetto");
+            Debug.Log("Vegetto");
             timerPaused = true;
+            ball.GetComponent <Rigidbody>().isKinematic = true;
             if (scorePlayer1 == scorePlayer2)
             {
                 infoText.text = "ÉGALITÉ";
@@ -128,21 +134,25 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator BeginTimer()
     {
+        beginTimer.gameObject.SetActive(true);
         yield return WaitForSecondsAndUpdateText(1, "2");
         yield return WaitForSecondsAndUpdateText(1, "1");
         yield return WaitForSecondsAndUpdateText(1, "GO!");
+        player1.GetComponent<Player1Controller>().CanMove();
+        player2.GetComponent<Player2Controller>().CanMove();
+
         yield return new WaitForSeconds(1.0f);
+        beginTimer.text = "3";
         timerPaused = false;
         beginTimer.gameObject.SetActive(false);
     }
     private IEnumerator RelaunchGame()
     {
         currentTime = countdownTime;
-
+        Debug.Log(currentTime);
         yield return new WaitForSeconds(5.0f);
 
         infoText.gameObject.SetActive(false);
-        beginTimer.text = "3";
         beginTimer.gameObject.SetActive(true);
 
         generator.ClearObstacles();

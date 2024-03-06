@@ -33,7 +33,7 @@ public class Player2Controller : MonoBehaviour
     private float timeSinceLastSprint = 0f;
     private float currentFOV;
 
-    bool canMove = false;
+
     public float speed;
 
 
@@ -149,11 +149,11 @@ public class Player2Controller : MonoBehaviour
 
     public void CanMove()
     {
-        canMove = true;
+        rb.isKinematic = false;
     }
     public void CantMove()
     {
-        canMove = false;
+        rb.isKinematic = true;
     }
     public void FillEnergy()
     {

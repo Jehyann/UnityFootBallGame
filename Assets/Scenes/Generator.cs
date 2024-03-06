@@ -65,7 +65,7 @@ public class Generator : MonoBehaviour
     private Transform CreateObject(Vector3 position)
     {
         RaycastHit hitInfo;
-        if (Physics.Raycast(position, Vector3.down, out hitInfo,100)) 
+        if (Physics.Raycast(position, Vector3.down, out hitInfo,100, LayerMask.GetMask("Ground"))) 
         {
             position.y = hitInfo.point.y;
         }

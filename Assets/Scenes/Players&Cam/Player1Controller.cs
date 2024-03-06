@@ -33,9 +33,14 @@ public class Player1Controller : MonoBehaviour
     private float timeSinceLastSprint = 0f;
     private float currentFOV;
 
-    bool canMove = false;
+
     public float speed;
 
+
+    private void Awake()
+    {
+
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -49,66 +54,69 @@ public class Player1Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Gérer la rotation horizontale
-        float rotationSpeed = 100f;
-        float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
-        transform.Rotate(Vector3.up * rotation);
+        
 
-        // Sprint
-        if (Input.GetKey(KeyCode.LeftShift) && energy > 0)
-        {
-            float speed = runSpeed;
 
-            energy -= sprintEnergyCost * Time.deltaTime;
+            // Gérer la rotation horizontale
+            float rotationSpeed = 100f;
+            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.up * rotation);
 
-            energySlider.value = energy;
-            newVelocity.z = Input.GetAxis("Vertical") * speed;
-
-            timeSinceLastSprint = 0f;
-
-            currentFOV = sprintFOV;
-        }
-        else
-        {
-            float speed = walkSpeed;
-            newVelocity.z = Input.GetAxis("Vertical") * speed;
-
-            timeSinceLastSprint += Time.deltaTime;
-
-            if (timeSinceLastSprint >= 3f && energy < energySlider.maxValue)
+            // Sprint
+            if (Input.GetKey(KeyCode.LeftShift) && energy > 0)
             {
-                energy += energyRegenRate * Time.deltaTime;
-                energy = Mathf.Clamp(energy, 0f, energySlider.maxValue);
+                float speed = runSpeed;
+
+                energy -= sprintEnergyCost * Time.deltaTime;
+
+                energySlider.value = energy;
+                newVelocity.z = Input.GetAxis("Vertical") * speed;
+
+                timeSinceLastSprint = 0f;
+
+                currentFOV = sprintFOV;
+            }
+            else
+            {
+                float speed = walkSpeed;
+                newVelocity.z = Input.GetAxis("Vertical") * speed;
+
+                timeSinceLastSprint += Time.deltaTime;
+
+                if (timeSinceLastSprint >= 3f && energy < energySlider.maxValue)
+                {
+                    energy += energyRegenRate * Time.deltaTime;
+                    energy = Mathf.Clamp(energy, 0f, energySlider.maxValue);
+                    energySlider.value = energy;
+                }
+
+                currentFOV = normalFOV;
+
+            }
+
+            camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, currentFOV, fovChangeSpeed * Time.deltaTime);
+
+            // Jetpack
+            if (Input.GetKey(KeyCode.Q) && energy > 0)
+            {
+                // Appliquer la force du jetpack
+                rb.AddForce(Vector3.up * jetpackForce * Time.deltaTime, ForceMode.Impulse);
+
+                // Consommer de l'énergie
+                energy -= jetpackEnergyCost * Time.deltaTime;
                 energySlider.value = energy;
             }
 
-            currentFOV = normalFOV;
+            // Jump
+            if (isGrounded && Input.GetKeyDown(KeyCode.Space) && !isJumping)
+            {
+                Debug.Log("Player is jumping");
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                isJumping = true;
+            }
 
-        }
-
-        camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, currentFOV, fovChangeSpeed * Time.deltaTime);
-
-        // Jetpack
-        if (Input.GetKey(KeyCode.Q) && energy > 0)
-        {
-            // Appliquer la force du jetpack
-            rb.AddForce(Vector3.up * jetpackForce * Time.deltaTime, ForceMode.Impulse);
-
-            // Consommer de l'énergie
-            energy -= jetpackEnergyCost * Time.deltaTime;
-            energySlider.value = energy;
-        }
-
-        // Jump
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space) && !isJumping)
-        {
-            Debug.Log("Player is jumping");
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isJumping = true;
-        }
-
-        arrow.rotation = Quaternion.LookRotation(ball.transform.position - transform.position) * Quaternion.Euler(-90,0,0);
-
+            arrow.rotation = Quaternion.LookRotation(ball.transform.position - transform.position) * Quaternion.Euler(-90, 0, 0);
+        
     }
 
     void FixedUpdate()
@@ -170,11 +178,11 @@ public class Player1Controller : MonoBehaviour
 
     public void CanMove()
     {
-        canMove = true;
+        rb.isKinematic = false;
     }
     public void CantMove()
     {
-        canMove = false;
+        rb.isKinematic = true;
     }
 
     public void FillEnergy()
