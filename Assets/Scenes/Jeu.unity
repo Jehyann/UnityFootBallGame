@@ -6087,7 +6087,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f5c5c2dee4431479e78a1183fe7802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 30
+  flySpeed: 30
+  chargeSpeed: 10
+  ball: {fileID: 8767483026180972597}
+  cooldownTime: 5
+--- !u!4 &222403544 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6788538757290762322, guid: ad4137f595ec8e2449cacca9df7d3735, type: 3}
+  m_PrefabInstance: {fileID: 1252186198}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &250596240
 GameObject:
   m_ObjectHideFlags: 0
@@ -13090,7 +13099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6788538757290762322, guid: ad4137f595ec8e2449cacca9df7d3735, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.61
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6788538757290762322, guid: ad4137f595ec8e2449cacca9df7d3735, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13422,7 +13431,8 @@ MonoBehaviour:
   infoText: {fileID: 698932400}
   beginTimer: {fileID: 774277123}
   generator: {fileID: 1640214458}
-  countdownTime: 10
+  drone: {fileID: 222403544}
+  countdownTime: 300
 --- !u!1 &1441661567
 GameObject:
   m_ObjectHideFlags: 0
@@ -19955,12 +19965,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 777c6cbbd4e49c845b9c27a335bdabf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleCountTarget: 20
+  obstacleCountTarget: 10
   levelWidth: 80
   levelDepth: 50
   minScale: 0.8
   maxScale: 1.7
-  spread: 10
+  spread: 20
   minDistance: 0
   triesCount: 0
   obstaclePrefab: {fileID: 3448647613925869208, guid: a2bd798ea40c7e341aa61ad124d95342, type: 3}
@@ -21092,6 +21102,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5019930114230368458, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5019930114230368458, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5019930114230368458, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5019930114230368458, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -21138,6 +21160,14 @@ PrefabInstance:
     - target: {fileID: 6398127299478964627, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8297654880454082947, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
+      propertyPath: drone
+      value: 
+      objectReference: {fileID: 222403544}
+    - target: {fileID: 8297654880454082947, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
+      propertyPath: scale
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8297654880454082947, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
       propertyPath: Particle

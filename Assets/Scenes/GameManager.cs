@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI beginTimer;
 
     [SerializeField] private Generator generator;
+    [SerializeField] private Transform drone;
 
 
     private float scorePlayer1;
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
         scorePlayer2 = 0;
         ball.GetComponent<Rigidbody>().isKinematic = true;
         currentTime = countdownTime;
-
+        drone.GetComponent<Drone>().Reset();
         generator.Generate();
         Init();
     }
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         player2.position = player2StartPos.position;
         player2.rotation = player2StartPos.rotation;
         ball.GetComponent<Ball>().Init();
+        
         player1.GetComponent<Player1Controller>().CantMove();
         player2.GetComponent<Player2Controller>().CantMove();
 

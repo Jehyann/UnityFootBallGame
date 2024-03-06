@@ -7,19 +7,22 @@ using UnityEngine;
 public class Drone : MonoBehaviour
 {
     [SerializeField] public float speed;
-    [SerializeField] public float flySpeed;
-    [SerializeField] public float chargeSpeed;
+    [SerializeField] public float flySpeed = 30;
+    [SerializeField] public float chargeSpeed = 20;
     [SerializeField] public Transform ball;
     [SerializeField] private float cooldownTime = 5;
 
     private float timer;
     private bool chasing = false;
+    private bool taking = false;
+
     // Start is called before the first frame update
     void Start()
     {
         float startRotation = Random.Range(0, 360);
         transform.rotation = Quaternion.Euler(0, startRotation, 0);
         timer = cooldownTime;
+        speed = flySpeed;
     }
 
     // Update is called once per frame
@@ -32,6 +35,10 @@ public class Drone : MonoBehaviour
         if (chasing)
         {
             ChaseBall();
+        }
+        else if (taking)
+        {
+            TakeBall();
         }
         else if (timer < 0)
         {
@@ -48,12 +55,9 @@ public class Drone : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.Raycast(transform.position, transform.forward, out hitInfo, 2, LayerMask.GetMask("Ground")))
         {
-            Debug.Log("Cocorico");
             Vector3 normale = hitInfo.normal;
-            Debug.Log(normale.x);
-            Debug.Log(normale.z);
-            float rotation = Random.Range(-60, 60);
-            Debug.Log(rotation);
+            float nombreRandom = Random.Range(0, 2) == 0 ? -1 : 1;
+            float rotation = Random.Range(20, 90) * nombreRandom;
             transform.rotation = Quaternion.LookRotation(normale) * Quaternion.Euler(0,rotation,0);
         }
     }
@@ -65,6 +69,7 @@ public class Drone : MonoBehaviour
         {
             if (hitInfo.collider.CompareTag("Ball")) 
             {
+                Debug.Log("Balle détectée");
                 speed = chargeSpeed;
                 chasing = true;
             }
@@ -74,5 +79,32 @@ public class Drone : MonoBehaviour
     private void ChaseBall()
     {
         transform.rotation = Quaternion.LookRotation(ball.transform.position - transform.position);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(transform.position, ball.transform.position - transform.position, out hitInfo, 3))
+        {
+            if (hitInfo.collider.CompareTag("Ball"))
+            {
+                Debug.Log("Balle Attrappée");
+                chasing = false;
+                taking = true;
+                ball.GetComponent<Ball>().followDrone = true;
+                transform.rotation = Quaternion.LookRotation(new Vector3(0,13,0)-transform.position);
+            }
+        }
+    }
+
+    private void TakeBall()
+    {
+        if (transform.position.y >=13)
+        {
+            taking = false;
+            ball.GetComponent<Ball>().followDrone = false;
+            ball.GetComponent<Rigidbody>().isKinematic = false;
+            Start();
+        }
+    }
+    public void Reset()
+    {
+        Start();
     }
 }
