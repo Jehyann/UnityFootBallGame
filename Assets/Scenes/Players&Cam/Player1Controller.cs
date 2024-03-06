@@ -54,10 +54,10 @@ public class Player1Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Gérer la rotation horizontale
-        float rotationSpeed = 100f;
-        float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
-        transform.Rotate(Vector3.up * rotation);
+            // Gérer la rotation horizontale
+            float rotationSpeed = 100f;
+            float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.up * rotation);
 
         // Sprint
         if (Input.GetKey(KeyCode.LeftShift) && energy > 0)
