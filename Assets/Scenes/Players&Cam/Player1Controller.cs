@@ -54,9 +54,6 @@ public class Player1Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
-
             // Gérer la rotation horizontale
             float rotationSpeed = 100f;
             float rotation = Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime;
