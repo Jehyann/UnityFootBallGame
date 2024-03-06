@@ -38,13 +38,15 @@ public class GameManager : MonoBehaviour
 
     public float countdownTime = 300f;
     private float currentTime;
-    private bool timerPaused = false;
+    private bool timerPaused = true;
 
-
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        generator.Generate();
         scoreText1.text = "0";
         scoreText2.text = "0";
         scorePlayer1 = 0;
@@ -56,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     public void Init()
     {
-        timerPaused = false;
+        generator.Generate();
         ball.position = ballStartPos.position;
         player1.position = player1StartPos.position;
         player1.rotation = player1StartPos.rotation;
@@ -130,7 +132,7 @@ public class GameManager : MonoBehaviour
         yield return WaitForSecondsAndUpdateText(1, "1");
         yield return WaitForSecondsAndUpdateText(1, "GO!");
         yield return new WaitForSeconds(1.0f);
-
+        timerPaused = false;
         beginTimer.gameObject.SetActive(false);
     }
     private IEnumerator RelaunchGame()
@@ -143,6 +145,7 @@ public class GameManager : MonoBehaviour
         beginTimer.text = "3";
         beginTimer.gameObject.SetActive(true);
 
+        generator.ClearObstacles();
         Start();
     }
     private IEnumerator WaitForSecondsAndUpdateText(float seconds, string newText)

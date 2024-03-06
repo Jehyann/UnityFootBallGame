@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Generator : MonoBehaviour
@@ -73,5 +74,13 @@ public class Generator : MonoBehaviour
 
         transform.localScale = Vector3.one * Random.Range(minScale,maxScale);
         return transform;
+    }
+
+    public void ClearObstacles()
+    {
+        foreach (Transform obstacle in obstacles)
+        {
+            GameObject.Destroy(obstacle.gameObject);
+        }
     }
 }
