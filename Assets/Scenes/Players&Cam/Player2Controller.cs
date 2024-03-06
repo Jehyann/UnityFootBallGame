@@ -24,6 +24,7 @@ public class Player2Controller : MonoBehaviour
     public float sprintFOV = 90f;
     public float normalFOV = 60f;
     public float fovChangeSpeed = 5f;
+    public float throwDistanceThreshold;
 
     [Header("Runtime")]
     private float energy;
@@ -33,9 +34,7 @@ public class Player2Controller : MonoBehaviour
     private float timeSinceLastSprint = 0f;
     private float currentFOV;
 
-
     public float speed;
-
 
     void Start()
     {
@@ -67,6 +66,7 @@ public class Player2Controller : MonoBehaviour
 
             currentFOV = sprintFOV;
         }
+        // Walk
         else
         {
             float speed = walkSpeed;
@@ -86,13 +86,17 @@ public class Player2Controller : MonoBehaviour
 
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, currentFOV, fovChangeSpeed * Time.deltaTime);
 
+        // Lancer balle proportionnel énergie
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ThrowBall();
+        }
+
         // Jetpack
         if (Input.GetKey(KeyCode.U) && energy > 0)
         {
-            // Appliquer la force du jetpack
             rb.AddForce(Vector3.up * jetpackForce * Time.deltaTime, ForceMode.Impulse);
 
-            // Consommer de l'énergie
             energy -= jetpackEnergyCost * Time.deltaTime;
             energySlider.value = energy;
         }
@@ -100,7 +104,6 @@ public class Player2Controller : MonoBehaviour
         // Jump
         if (isGrounded && Input.GetKeyDown(KeyCode.RightControl) && !isJumping)
         {
-            Debug.Log("Player is jumping");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping = true;
         }
@@ -111,7 +114,6 @@ public class Player2Controller : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mettre à jour l'état au sol
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.500005f))
         {
             isGrounded = true;
@@ -123,16 +125,31 @@ public class Player2Controller : MonoBehaviour
             rb.drag = 0.1f;
         }
 
-        // Appliquer la vélocité uniquement si le joueur est sur le sol ou en train de sauter
         if (isGrounded || isJumping)
         {
             rb.velocity = transform.TransformDirection(newVelocity);
         }
 
-        // Réinitialiser le drapeau de saut si le joueur est au sol
         if (isGrounded)
         {
             isJumping = false;
+        }
+    }
+
+    public void ThrowBall()
+    {
+        if (Vector3.Distance(transform.position, ball.position) < throwDistanceThreshold)
+        {
+            if (energy > 0.25)
+            {
+                float throwForce = energy * 50;
+
+                Rigidbody ballRb = ball.GetComponent<Rigidbody>();
+                ballRb.velocity = camera.transform.forward * throwForce;
+
+                energy = 0f;
+                energySlider.value = energy;
+            }
         }
     }
 
