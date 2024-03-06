@@ -37,7 +37,10 @@ public class GameManager : MonoBehaviour
     private float scorePlayer1;
     private float scorePlayer2;
 
-    public float countdownTime = 300f;
+    public float countdownTime = 180f;
+    string formattedTime;
+
+
     private float currentTime;
     private bool timerPaused = true;
 
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         scoreText1.text = "0";
         scoreText2.text = "0";
-        timerText.text = countdownTime.ToString();
+        timerText.text = FormatTime(countdownTime);
         scorePlayer1 = 0;
         scorePlayer2 = 0;
         ball.GetComponent<Rigidbody>().isKinematic = true;
@@ -75,6 +78,8 @@ public class GameManager : MonoBehaviour
         player2.GetComponent<Player2Controller>().FillEnergy();
 
         StartCoroutine(BeginTimer());
+
+        timerText.text = FormatTime(countdownTime);
     }
 
     public void Update()
@@ -123,15 +128,28 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Player" + playerId + " score point");
     }
+    public string FormatTime(float totalTime)
+    {
+        int minutes = Mathf.FloorToInt(totalTime / 60);
+        int seconds = Mathf.FloorToInt(totalTime % 60);
+
+        string formattedTime = minutes + ":" + seconds.ToString("00");
+
+        return formattedTime;
+    }
 
     public void UpdateTimerText()
     {
         // Update the UI text to display the remaining time
         if (timerText != null)
         {
-            timerText.text = Mathf.CeilToInt(currentTime).ToString();
+            int minutes = Mathf.FloorToInt(currentTime / 60);
+            int seconds = Mathf.FloorToInt(currentTime % 60);
+            string timeString = string.Format("{0:0}:{1:00}", minutes, seconds);
+            timerText.text = timeString;
         }
     }
+
     private IEnumerator BeginTimer()
     {
         beginTimer.gameObject.SetActive(true);
