@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<Rigidbody>().isKinematic = true;
         currentTime = countdownTime;
         drone.GetComponent<Drone>().Reset();
-        generator.GeneratePoisson(generator.obstaclePrefab, 15, 50);
+        generator.GeneratePoisson(generator.obstaclePrefab, 10, 20);
         generator.GeneratePoisson(generator.grass, 1, 50);
         Init();
     }
