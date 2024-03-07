@@ -20624,14 +20624,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 777c6cbbd4e49c845b9c27a335bdabf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleCountTarget: 10
-  levelWidth: 70
-  levelDepth: 50
+  startpos1: {fileID: 63819931}
+  startpos2: {fileID: 1722031946}
+  startpos3: {fileID: 250596241}
+  obstacleCountTarget: 50
+  levelWidth: 54
+  levelDepth: 70
   minScale: 0.8
   maxScale: 1.7
   spread: 20
-  minDistance: 0
-  triesCount: 0
+  minDistance: 15
+  triesCount: 10
   obstaclePrefab: {fileID: 3448647613925869208, guid: a2bd798ea40c7e341aa61ad124d95342, type: 3}
 --- !u!4 &1640214459
 Transform:
@@ -20665,7 +20668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00744d5fd3516004ca09c51b12d6953b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTimer: 5
+  cooldownTimer: 10
   obstaclePrefab: {fileID: 1604981034209185665, guid: 4aa01f1d5c72d4e47a8c44e612a6b6fc, type: 3}
 --- !u!54 &1647297935
 Rigidbody:
@@ -20732,7 +20735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00744d5fd3516004ca09c51b12d6953b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTimer: 5
+  cooldownTimer: 10
   obstaclePrefab: {fileID: 1604981034209185665, guid: 4aa01f1d5c72d4e47a8c44e612a6b6fc, type: 3}
 --- !u!65 &1674308504
 BoxCollider:
@@ -21810,7 +21813,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3337822050957157313, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
       propertyPath: m_Mass
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5019930114230368458, guid: a82bce0a9884e0a4aafe60fb317c86de, type: 3}
       propertyPath: m_LocalScale.x
