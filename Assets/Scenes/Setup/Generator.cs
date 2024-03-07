@@ -19,7 +19,9 @@ public class Generator : MonoBehaviour
     [SerializeField] private float minDistance;
     [SerializeField] private int triesCount;
 
-    [SerializeField] private Transform obstaclePrefab;
+    [SerializeField] public Transform obstaclePrefab;
+    [SerializeField] public Transform grass;
+
 
     private List<Transform> obstacles;
 
@@ -40,7 +42,7 @@ public class Generator : MonoBehaviour
         obstacles = new List<Transform>();
 
         Vector3 pos = new Vector3(Random.value * levelWidth - (levelWidth * 0.5f), 20, Random.value * levelDepth - (levelDepth * 0.5f));
-        obstacles.Add(CreateObject(pos));
+        obstacles.Add(CreateObject(pos, grass));
 
         int count = 0, safe = 1000;
         while (count < obstacleCountTarget && safe >0)
@@ -58,7 +60,7 @@ public class Generator : MonoBehaviour
 
             if (valid)
             {
-                obstacles.Add(CreateObject(pos));
+                obstacles.Add(CreateObject(pos, grass));
 
                 count++;
             }
@@ -66,21 +68,20 @@ public class Generator : MonoBehaviour
             safe--;
         }
     }
-    private Transform CreateObject(Vector3 position)
+    private Transform CreateObject(Vector3 position, Transform obj)
     {
         RaycastHit hitInfo;
         if (Physics.Raycast(position, Vector3.down, out hitInfo,100, LayerMask.GetMask("Ground"))) 
         {
             position.y = hitInfo.point.y;
         }
+        Transform transform = Instantiate(obj, position, Quaternion.Euler(0, Random.value * 360, 0));
 
-        Transform transform = Instantiate(obstaclePrefab, position, Quaternion.Euler(0, Random.value * 360, 0));
-
-        transform.localScale = Vector3.one * Random.Range(minScale,maxScale);
+        transform.localScale = transform.localScale + Vector3.one * Random.Range(minScale,maxScale);
         return transform;
     }
 
-    public void GeneratePoisson()
+    public void GeneratePoisson(Transform obj, float distance, int countTarget)
     {
         obstacles = new List<Transform>();
 
@@ -88,7 +89,7 @@ public class Generator : MonoBehaviour
         points.Add(Vector3.zero);
 
         int count = 0, safe = 1000;
-        while (points.Count > 0 && count < obstacleCountTarget && safe > 0)
+        while (points.Count > 0 && count < countTarget && safe > 0)
         {
             int selectedIndex = Random.Range(0, points.Count);
             Vector3 point = points[selectedIndex];
@@ -101,7 +102,7 @@ public class Generator : MonoBehaviour
                 bool valid = true;
                 for (int i = 0; i < obstacles.Count; i++)
                 {
-                    if (Vector3.Distance(newPos, new Vector3(obstacles[i].position.x, 0, obstacles[i].position.z)) < minDistance || !OnField(newPos) || TooClose(newPos))
+                    if (Vector3.Distance(newPos, new Vector3(obstacles[i].position.x, 0, obstacles[i].position.z)) < distance || !OnField(newPos) || TooClose(newPos))
                     {
                         valid = false;
                         break;
@@ -110,7 +111,7 @@ public class Generator : MonoBehaviour
 
                 if (valid)
                 {
-                    obstacles.Add(CreateObject(newPos));
+                    obstacles.Add(CreateObject(newPos, obj));
                     points.Add(newPos);
                     count++;
                     break;
