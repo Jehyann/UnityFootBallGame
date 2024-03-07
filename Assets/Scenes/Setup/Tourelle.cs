@@ -61,7 +61,7 @@ public class Tourelle : MonoBehaviour
         {
             float missileSpeed = 75.0f;
             RaycastHit infoHit;
-            if (!Physics.Raycast(missile.position, missile.forward, out infoHit, 1f))
+            if (!Physics.Raycast(missile.position, missile.forward, out infoHit, 1f, LayerMask.GetMask("Ball")))
             {
                 missile.Translate(Vector3.forward * missileSpeed * Time.deltaTime);
             }
@@ -69,7 +69,7 @@ public class Tourelle : MonoBehaviour
             {
                 if (infoHit.collider.CompareTag("Ball"))
                 {
-                    infoHit.collider.GetComponent<Rigidbody>().AddForce(missile.forward * missileSpeed, ForceMode.Impulse);
+                    infoHit.collider.GetComponent<Rigidbody>().AddForce(missile.forward * missileSpeed * 2, ForceMode.Impulse);
                 }
                 missileMoving = false;
                 missile.GetComponent<Rigidbody>().isKinematic = false;
