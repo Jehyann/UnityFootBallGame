@@ -34,9 +34,9 @@ public class Tourelle : MonoBehaviour
     private Transform CheckBall()
     {
         RaycastHit infoHit;
-        Vector3 pos = transform.position + new Vector3(0, 5, 0);
+        Vector3 pos = transform.position + new Vector3(0, 3, 0);
 
-        if (Physics.Raycast(pos, transform.forward,out infoHit, 50))
+        if (Physics.Raycast(pos, transform.forward,out infoHit, 50, LayerMask.GetMask("Ball")))
         {
             if (infoHit.collider.CompareTag("Ball")) 
             {
@@ -59,7 +59,7 @@ public class Tourelle : MonoBehaviour
     {
         if (missile != null)
         {
-            float missileSpeed = 50.0f;
+            float missileSpeed = 75.0f;
             RaycastHit infoHit;
             if (!Physics.Raycast(missile.position, missile.forward, out infoHit, 1f))
             {

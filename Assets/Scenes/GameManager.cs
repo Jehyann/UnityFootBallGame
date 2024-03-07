@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<Rigidbody>().isKinematic = true;
         currentTime = countdownTime;
         drone.GetComponent<Drone>().Reset();
-        //generator.Generate();
+        generator.Generate();
         Init();
     }
 
