@@ -4,7 +4,6 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     [SerializeField] private float scale = 10;
-    [SerializeField] private float additionalForce = 100;
     [SerializeField] private Transform drone;
 
     private Rigidbody rb;

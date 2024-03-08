@@ -33,7 +33,6 @@ public class Player1Controller : MonoBehaviour
     private bool isJumping = false;
     private float timeSinceLastSprint = 0f;
     private float currentFOV;
-    private bool trackBall = false;
 
     public float speed;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
     private float scorePlayer1;
     private float scorePlayer2;
 
-    public float countdownTime = 180f;
+    public float countdownTime = 60f;
     string formattedTime;
 
 
@@ -63,6 +64,8 @@ public class GameManager : MonoBehaviour
         generator.GeneratePoisson(generator.obstaclePrefab, 10, 20);
         generator.GeneratePoisson(generator.grass, 1, 50);
         Init();
+
+
     }
 
     public void Init()
@@ -87,6 +90,11 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         if (!timerPaused)
         {
             currentTime -= Time.deltaTime;
