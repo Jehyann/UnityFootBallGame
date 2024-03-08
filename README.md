@@ -1,6 +1,6 @@
 # UnityGame2
 
-Reset Game = V
+Reset Game : V
 
 ## Player 1 Controls
 - ZQSD : Move
