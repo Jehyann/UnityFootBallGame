@@ -33,6 +33,7 @@ public class Player1Controller : MonoBehaviour
     private bool isJumping = false;
     private float timeSinceLastSprint = 0f;
     private float currentFOV;
+    private bool trackBall = false;
 
     public float speed;
 
@@ -122,8 +123,9 @@ public class Player1Controller : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.500005f))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.7500005f))
         {
+            Debug.Log("grounded");
             isGrounded = true;
             rb.drag = 1.5f;
         }

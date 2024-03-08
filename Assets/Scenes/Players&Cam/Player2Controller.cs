@@ -114,7 +114,7 @@ public class Player2Controller : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.500005f))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.7500005f))
         {
             isGrounded = true;
             rb.drag = 1.5f;
